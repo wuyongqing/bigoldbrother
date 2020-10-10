@@ -9,7 +9,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class test {
+public class LambdaTest {
     static class test1{
         List<String> scanCodeList = new ArrayList<>();
 
@@ -64,14 +64,20 @@ public class test {
 //        stream.myForEach(str -> System.out.println(str));
 //
 //
-//        ArrayList<String> list = new ArrayList<>(Arrays.asList("I", "love", "you", "so", "deeply"));
-//        list.forEach(new Consumer<String>(){
-//            @Override
-//            public void accept(String str){
-//                if(str.length()>0)
-//                    System.out.println(str);
-//            }
-//        });
+        ArrayList<String> list4 = new ArrayList<>(Arrays.asList("I", "love", "you", "so", "deeply"));
+        list4.forEach(new Consumer<String>(){
+            @Override
+            public void accept(String str){
+                if(str.length() > 2)
+                    System.out.println(str);
+            }
+        });
+
+        list4.forEach(str -> {
+            if (str.length() > 2) {
+                System.out.println(str);
+            }
+        });
 //
 //        list.sort((str1, str2) -> str1.length()-str2.length());
 //
@@ -117,15 +123,17 @@ public class test {
         println(null);
         String[] array = {"I", "love", "you", "so", "deeply"};
         Supplier<Stream<String>> supplier = ()->Stream.of(array);
-
-//        stream
-//                .filter(s -> s.length()<=3)
-//                .distinct()
-//                .sorted((s1, s2) -> s1.length() - s2.length())
-//                .map(s -> s.toUpperCase())
-//                .forEach(s -> System.out.println(s));
+        Stream<String> stream = supplier.get();
+        stream
+                .filter(s -> s.length() <= 3)
+                .distinct()
+                .sorted((s1, s2) -> s1.length() - s2.length())
+                .map(s -> s.toUpperCase())
+                .forEach(s -> System.out.println(s));
 
         List<String> list = new ArrayList<>(Arrays.asList("I", "love", "you", "so", "so", "deeply"));
+
+
         println(list.stream().reduce((s1, s2) -> s1.length() >= s2.length() ? s1 : s2).get());
         println(list.stream().reduce(0, (sum, str) -> sum + str.length(), (a, b) -> a + b));
         println(list.stream().max(Comparator.comparingInt(String::length)).get());
@@ -135,6 +143,7 @@ public class test {
 
         println(supplier.get().collect(Collectors.toList()));
         println(supplier.get().collect(Collectors.toSet()));
+        println("-================================================================================-");
         println(supplier.get().collect(Collectors.toMap(Function.identity(), String::length)));
         println(supplier.get().collect(Collectors.toMap(t -> t, String::length)));
 
@@ -164,6 +173,10 @@ public class test {
 
         passingFailing = supplier1.get().collect(Collectors.groupingBy(student -> computeGPA(student) >= PASS_THRESHOLD));
         println("passingFailing" + passingFailing);
+
+
+        println(list.stream().collect(Collectors.joining(",", "{","}")));
+
     }
 
     private static double computeGPA(Student student) {
@@ -179,10 +192,12 @@ public class test {
 
     public static void println(Object o){
         System.out.println("---------------------------------------");
-        if (o != null) {
-            System.out.println(o.getClass()+": " + o.toString());
-        } else {
+        if (o == null) {
             System.out.println("null");
+        } else if (o instanceof String) {
+            System.out.println(o);
+        } else {
+            System.out.println(o.getClass()+": " + o.toString());
         }
     }
     public static void println(String s, HashMap<Integer, String> map){

@@ -1,10 +1,14 @@
 package test;
 
+import util.MD5;
+
 import javax.xml.transform.Source;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class test {
     public static void main(String[] args) {
@@ -84,5 +88,33 @@ public class test {
         System.out.println(times);
         System.out.println(times.atZone(ZoneId.systemDefault()));
         System.out.println(times.atZone(ZoneId.systemDefault()).toInstant());
+
+
+        LocalDate localDate12 = LocalDate.now().plusDays(-1);
+        System.out.println(localDate12.toString());
+
+        String timestamp = System.currentTimeMillis() + "";
+        System.out.println(timestamp);
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("version", "1.0");
+        parameterMap.put("timestamp", timestamp);
+        String data = "{\"stockId\":\"9856000\",\"openId\":\"2323dfsdf342342\",\"out_request_no\":\"89560002019101000121\"}";
+        System.out.println(data);
+        parameterMap.put("data", data);
+        System.out.println(buildSign(parameterMap));
+        System.out.println(buildSign(parameterMap));
+        parameterMap.put("sign", buildSign(parameterMap));
     }
+
+    private static String buildSign(Map<String, Object> parameter) {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, Object> entry : parameter.entrySet()) {
+            builder.append(entry.getKey() + "=" + entry.getValue() + "&");
+        }
+        String substring = builder.substring(0, builder.length() - 1);
+
+        //return MD5.md5("coupon_id=15241782&openId=o8uJ6uDISgTN_FG6FcGtAJafNA-U&app_key=F4AdSc1kdXKslGh").toUpperCase();
+        return MD5.md5("openId=o8uJ6uDISgTN_FG6FcGtAJafNA-U&out_request_no=20201029074649927639&stockId=15241782&app_key=F4AdSc1kdXKslGh").toUpperCase();
+    }
+
 }

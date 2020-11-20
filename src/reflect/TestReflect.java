@@ -1,5 +1,7 @@
 package reflect;
 
+import cn.hutool.core.convert.Convert;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -26,6 +28,13 @@ public class TestReflect {
          */
         Method t = Class.forName(str).getMethod("println", null);
         t.invoke(null,null);
+        int a = 0;
+        String b = Convert.toStr(a);
+        System.out.println(a);
+        long[] c = {1,2,3,4,5};
+        //bStr为："[1, 2, 3, 4, 5]"
+        String bStr = Convert.toStr(c);
+        System.out.println(bStr);
     }
 
     private static void changeBtoA(Object obj) throws Exception {

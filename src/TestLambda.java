@@ -1,8 +1,12 @@
+import util.MD5;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class TestLambda {
+    private static String PASSWORD_REGEX = "^^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*_-]+$)(?![a-zA-z\\d]+$)(?![a-zA-z!@#$%^&*_-]+$)(?![\\d!@#$%^&*_-]+$)[a-zA-Z\\d!@#$%^&*_-]+$";
     public static void main(String[] args) {
         Random r = new Random();
         List<Student> students = new ArrayList<Student>();
@@ -22,6 +26,22 @@ public class TestLambda {
         HeroChecker checker1 = (Student s) -> s.getMathScore() > 100 && s.getEnglishScore() < 50;
 
         filter(students,checker1);
+
+        System.out.println();
+        Long a = 929L;
+        Long b = 10L;
+        Long c = a/(b*10);
+        System.out.println(String.format("%.2f", a / 10.0 / b));
+
+        String password = "545784*p";
+        if (!Pattern.matches(PASSWORD_REGEX, password)) {
+            System.out.println("不符合");
+        } else {
+            System.out.println("符合");
+        }
+
+        System.out.println(MD5.md5("123456"));
+
     }
 
     private static void filter(List<Student> students,HeroChecker checker) {

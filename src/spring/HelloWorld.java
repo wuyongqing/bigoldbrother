@@ -2,10 +2,11 @@ package spring;
 
 import java.io.PrintStream;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
+import java.text.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,7 @@ public class HelloWorld {
     private static final String SPECIAL_PATTERN = ".*[ !\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~\\\\]+.*";
 
     //private static PrintStream stream;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         //stream.println("123");
         DecimalFormat decimalFormat = new DecimalFormat("##.00%");
         Number number = decimalFormat.parse("0.5", new ParsePosition(0));
@@ -82,6 +83,22 @@ public class HelloWorld {
 //        } else {
 //            System.out.println(false);
 //        }
+
+        LocalDate time = LocalDate.now().plusDays(-1);
+        System.out.println(time.isBefore(time));
+        System.out.println(time);
+        String date = time.format(DateTimeFormatter.ISO_DATE);
+        System.out.println(date);
+
+        System.out.println("-------------------------------------------------------------------");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = sdf.parse("2020-12-30");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        System.out.println(cal.getFirstDayOfWeek());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);  //设置一周的第一天是周一
+        System.out.println("cal: " + cal.getTime());
+        //System.out.println(cal.);
 
 
     }
